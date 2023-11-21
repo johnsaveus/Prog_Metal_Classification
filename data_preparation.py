@@ -4,7 +4,12 @@ import numpy as np
 import pandas as pd
 import librosa
 from librosa import feature
+from sklearn import preprocessing
 from sklearn.preprocessing import StandardScaler
+import warnings
+
+
+warnings.simplefilter('ignore')
 
 '''     The original raw data need to be cleaned
         We make a list. Each element contains the path to each riff at [0] and the label (band) at [1]
@@ -31,11 +36,11 @@ def raw_to_list(path):
 
 '''
 
-def wav_featurize(wav_list):
+def wav_featurize(wav_list,labels):
 
     csv_matrix = []
 
-    for wav in wav_list:
+    for idx , wav in enumerate(wav_list):
 
         feature_vector = []
 
@@ -52,19 +57,25 @@ def wav_featurize(wav_list):
                                spectral_centroid,
                                spectral_bandwidth,
                                spectral_rolloff,
-                               mfcc]
+                               mfcc,
+                               ]
         )
         
         mean_features = [np.mean(feat) for feat in feature_vector]
         csv_matrix.append(mean_features)
 
-    scaled_matrix = scale_features(csv_matrix)
-    df = pd.DataFrame(scaled_matrix)
+    scaled_features = scale_features(csv_matrix)
+    df_features = pd.DataFrame(scaled_features)
+    df_endp = pd.DataFrame(labels)
 
-    return df 
+    df = pd.concat([df_features,df_endp], axis = 1, join='inner')
 
-""" Need to scale the features cause some features have values 0.01... and others 5000..
-"""
+    df = label_encoding(df)
+
+    return df
+
+
+# Input data needs to be scaled
 def scale_features(input_data):
     scaler = StandardScaler()
     scaled_input = scaler.fit_transform(input_data)
@@ -72,12 +83,20 @@ def scale_features(input_data):
     return scaled_input
 
 
+# The unique band names need to be converted to classes of integers
+def label_encoding(frame):
+        
+    encoder = preprocessing.LabelEncoder()
+    frame.iloc[:,-1:] = encoder.fit_transform(frame.iloc[:,-1:])
+
+    return frame
+
+
 def main():
     data_path = 'raw_data'
     wavs , labels = raw_to_list(data_path)
-    frame = wav_featurize(wavs)
+    frame = wav_featurize(wavs,labels)
     frame.to_csv('clean_data\csv_data',index=False)
 
 if __name__ == '__main__':
     main()
-
