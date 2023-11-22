@@ -7,21 +7,21 @@ import pandas as pd
     The 8th album of each band will always be used as a independent test dataset
 '''
 
-def main(path_to_data: str):
+def dataset_split(path_to_data: str):
 
     df = pd.read_csv(path_to_data)
     train_csv = pd.DataFrame(columns=df.columns)
     test_csv = pd.DataFrame(columns=df.columns)
     
     for i in range(0, len(df), 5):
-        train_data = df.iloc[i:i + 2]
-        test_data = df.iloc[i+2:i+5]
+        train_data = df.iloc[i+2:i+5]
+        test_data = df.iloc[i:i + 2]
 
         train_csv = pd.concat([train_csv,train_data],ignore_index=True)
         test_csv = pd.concat([test_csv,test_data],ignore_index=True)
 
-    train_csv.to_csv(r'clean_data\train',index=True)
-    test_csv.to_csv(r'clean_data\test',index=True)
+    train_csv.to_csv(r'clean_data\train',index=False)
+    test_csv.to_csv(r'clean_data\test',index=False)
 
     return None
 

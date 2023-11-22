@@ -64,8 +64,7 @@ def wav_featurize(wav_list,labels):
         mean_features = [np.mean(feat) for feat in feature_vector]
         csv_matrix.append(mean_features)
 
-    scaled_features = scale_features(csv_matrix)
-    df_features = pd.DataFrame(scaled_features)
+    df_features = pd.DataFrame(csv_matrix)
     df_endp = pd.DataFrame(labels)
 
     df = pd.concat([df_features,df_endp], axis = 1, join='inner')
@@ -73,14 +72,6 @@ def wav_featurize(wav_list,labels):
     df = label_encoding(df)
 
     return df
-
-
-# Input data needs to be scaled
-def scale_features(input_data):
-    scaler = StandardScaler()
-    scaled_input = scaler.fit_transform(input_data)
-
-    return scaled_input
 
 
 # The unique band names need to be converted to classes of integers
