@@ -15,14 +15,17 @@ warnings.simplefilter('ignore')
         We make a list. Each element contains the path to each riff at [0] and the label (band) at [1]
 ''' 
 
-def raw_to_list(path):
+def raw_to_list(path:str):
     riff_list = []
     label_list = []
     for bands, albums, riffs in os.walk(path):
         for riff in riffs:
             path_to_riff = os.path.join(bands,riff)
             # Pattern to match the band which is the labels (It is path specific)
-            pattern = r'raw_data\\(.*?)(?:\\|$)' 
+            if path.endswith('train'):     
+                pattern = r'raw_data\\train\\(.*?)(?:\\|$)'
+            elif path.endswith('test'):
+                pattern = r'raw_data\\test\\(.*?)(?:\\|$)'
             match = re.search(pattern,path_to_riff)
             label = match.group(1)
             riff_list.append(path_to_riff)
@@ -64,8 +67,13 @@ def wav_featurize(wav_list,labels):
         mean_features = [np.mean(feat) for feat in feature_vector]
         csv_matrix.append(mean_features)
 
-    df_features = pd.DataFrame(csv_matrix)
-    df_endp = pd.DataFrame(labels)
+    df_features = pd.DataFrame(csv_matrix,columns=['zero_crossing_rate',
+                                                   'chroma_stft',
+                                                   'spectral_centroid',
+                                                   'spectral_bandwidth',
+                                                   'spectral_rolloff',
+                                                   'mfcc'])
+    df_endp = pd.DataFrame(labels,columns=['band_name'])
 
     df = pd.concat([df_features,df_endp], axis = 1, join='inner')
 
@@ -82,12 +90,17 @@ def label_encoding(frame):
 
     return frame
 
+def convert(raw_path,clean_path):
+
+    wavs , labels = raw_to_list(raw_path)   
+    frame = wav_featurize(wavs,labels)
+    frame.to_csv(clean_path,index=False)
+    
+    return None
 
 def main():
-    data_path = 'raw_data'
-    wavs , labels = raw_to_list(data_path)
-    frame = wav_featurize(wavs,labels)
-    frame.to_csv('clean_data\csv_data',index=False)
+    convert('raw_data\\train','clean_data\\train')
+    convert('raw_data\\test','clean_data\\test')
 
 if __name__ == '__main__':
     main()
