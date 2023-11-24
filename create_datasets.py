@@ -11,9 +11,8 @@ import warnings
 
 warnings.simplefilter('ignore')
 
-'''     The original raw data need to be cleaned
-        We make a list. Each element contains the path to each riff at [0] and the label (band) at [1]
-''' 
+ # The original raw data need to be cleaned.
+ # In this function 2 lists are made to extract the input(riff) and the labels(band name)
 
 def raw_to_list(path:str):
     riff_list = []
@@ -33,11 +32,10 @@ def raw_to_list(path:str):
 
     return riff_list , label_list
 
-'''     Function to extract short term features for our wav files
-        Cite "https://github.com/farzanaanjum/Music-Genre-Classification-with-Python/blob/master/Music_genre_classification.ipynb"
-        The features that are used are 1)zero crossing rate, 2)chroma stft, 3)spectral centroid +++++++++++++ !!!!!
-
-'''
+     # This function is used to extract short term features for our wav files(input)
+     # It also creates a dataframe to hold the features and the labels
+     # Cite "https://github.com/farzanaanjum/Music-Genre-Classification-with-Python/blob/master/Music_genre_classification.ipynb"
+     # The features that are used are 1)zero crossing rate, 2)chroma stft, 3)spectral centroid +++++++++++++ !!!!!
 
 def wav_featurize(wav_list,labels):
 
@@ -81,8 +79,7 @@ def wav_featurize(wav_list,labels):
 
     return df
 
-
-# The unique band names need to be converted to classes of integers
+# Create integer labels 
 def label_encoding(frame):
         
     encoder = preprocessing.LabelEncoder()
@@ -99,7 +96,7 @@ def convert_to_pd(raw_path):
 
 ''' For each class(band) there are 40 instances.
     Those 40 instances are comprised of 8 albums -> 5 instances per album
-    From those 5 instances we will use 3 for training, 1 for validation and 1 for test
+    From those 5 instances we will use 4 for training, 1 for test
     The 8th album of each band will always be used as a independent test dataset
 '''
 
@@ -117,8 +114,8 @@ def split(raw_path: str):
     train_csv.drop(removed,inplace=True)
     train_csv.reset_index(inplace=True)
 
-    train_csv.to_csv(r'yolo\train',index=False)
-    test_csv.to_csv(r'yolo\test',index=False)
+    train_csv.to_csv(r'clean_data\train',index=False)
+    test_csv.to_csv(r'clean_data\test',index=False)
 
     return None
 
