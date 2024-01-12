@@ -6,6 +6,15 @@ __pycache__/
 # C extensions
 *.so
 
+#data files
+
+raw_data/
+clean_data/
+Scripts/
+share/
+etc/
+.vscode/
+pyvenv.cfg
 # Distribution / packaging
 .Python
 build/

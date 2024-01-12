@@ -102,8 +102,8 @@ def convert_to_pd(raw_path):
 
 def split(raw_path: str):
 
-    train_csv = convert_to_pd(raw_path + '\\train')
-    test_csv = convert_to_pd(raw_path + '\\test')
+    train_csv = convert_to_pd(raw_path + '\train')
+    test_csv = convert_to_pd(raw_path + '\test')
 
     removed = []
     for i in range(0, len(train_csv), 5):
