@@ -15,6 +15,7 @@ share/
 etc/
 .vscode/
 pyvenv.cfg
+.gitignore
 # Distribution / packaging
 .Python
 build/
