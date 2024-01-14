@@ -13,9 +13,17 @@ def pyaudio_featurize(wavs):
         y, sr = librosa.load(wav)
         feats, names = sF.feature_extraction(y,sr, 0.05*sr, 0.025*sr)
         feats_mean = np.mean(feats,axis=1)
+        feats_std = np.std(feats,axis=1)
         feature_vector.extend(feats_mean)
+        feature_vector.extend(feats_std)
         feature_matrix.append(feature_vector)
-    df_features = pd.DataFrame(feature_matrix, columns = names)
+    names_mean = []
+    names_std = []
+    for name in names:
+        names_mean.append(name+'_mean')
+        names_std.append(name+'_std')
+    feature_names = names_mean + names_std
+    df_features = pd.DataFrame(feature_matrix, columns = feature_names)
 
     return df_features
 

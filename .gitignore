@@ -16,6 +16,7 @@ etc/
 .vscode/
 pyvenv.cfg
 .gitignore
+.ipynb
 # Distribution / packaging
 .Python
 build/
