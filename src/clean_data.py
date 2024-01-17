@@ -10,10 +10,12 @@ def raw_to_list(path:str):
         for riff in riffs:
             path_to_riff = os.path.join(bands,riff)
             riff_list.append(path_to_riff)
-            if path.endswith('train'):     
-                pattern = r'..\\raw_data\\train\\(.*?)(?:\\|$)'
-            elif path.endswith('test'):
-                pattern = r'..\\raw_data\\test\\(.*?)(?:\\|$)'
+            if path.endswith('Train'):     
+                pattern = r'..\\raw_data\\Train\\(.*?)(?:\\|$)'
+            elif path.endswith('Test'):
+                pattern = r'..\\raw_data\\Test\\(.*?)(?:\\|$)'
+            elif path.endswith('val'):
+                pattern = r'..\\raw_data\\val\\(.*?)(?:\\|$)'
             match = re.search(pattern,path_to_riff)
             label = match.group(1) 
             label_list.append(label)
