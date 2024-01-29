@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-def correlation_drop(dataset,threshold):
+def features_corellation(dataset,threshold):
 
     correlation_matrix = dataset.corr()
     correlated_pairs = []
@@ -20,3 +20,12 @@ def correlation_drop(dataset,threshold):
     dataset = dataset.drop(first_feature,axis=1)
 
     return dataset, first_feature, correlated_pairs
+
+def feature_target_corellation(dataset,threshold):
+    corr_matrix = dataset.corr()
+    features_to_drop = corr_matrix[abs(corr_matrix['Band']) < threshold].index
+    dataset = dataset.drop(features_to_drop, axis=1)
+    
+    return dataset
+
+    
