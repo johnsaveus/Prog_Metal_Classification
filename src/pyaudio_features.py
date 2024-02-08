@@ -26,7 +26,7 @@ def pyaudio_featurize(y_array):
     sr = 22050
     for y in y_array:
         feature_vector = []
-        feats, names = sF.feature_extraction(y,sr, 0.15*sr, 0.075*sr)
+        feats, names = sF.feature_extraction(y,sr, 0.15*sr, 0.075*sr,deltas=False)
         feats_mean = np.mean(feats,axis=1)
         feats_std = np.std(feats,axis=1)
         feature_vector.extend(feats_mean)
