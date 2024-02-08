@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from sklearn.feature_selection import SelectKBest, f_classif
 
 def features_corellation(dataset,threshold):
 
@@ -27,5 +28,7 @@ def feature_target_corellation(dataset,threshold):
     dataset = dataset.drop(features_to_drop, axis=1)
     
     return dataset
+
+    
 
     
