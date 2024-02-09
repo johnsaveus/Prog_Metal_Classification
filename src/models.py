@@ -77,7 +77,7 @@ def avg_std_metrics(all_scores):
 
     prec_avg, prec_std = np.mean(precision,axis=0), np.std(precision,axis=0)
     recall_avg, recall_std = np.mean(recall,axis=0), np.std(recall,axis=0)
-    f1_avg, f1_std = np.mean(f1_score,axis=0), np.std(recall,axis=0)
+    f1_avg, f1_std = np.mean(f1_score,axis=0), np.std(f1_score,axis=0)
 
     return {'precision':[prec_avg,prec_std],
             'recall':[recall_avg,recall_std],
