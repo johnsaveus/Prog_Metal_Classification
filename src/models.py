@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import classification_report, accuracy_score
+from sklearn.metrics import classification_report, accuracy_score, f1_score
 
 def calculate_metrics(class_report):
     ''' Input must be classification report object from sklearn 
@@ -23,8 +23,8 @@ def cross_validate(model,dataset,folds=20):
        as for all classes averaged'''
     np.random.seed(42)
     grouped = dataset.groupby('Band') # Creates different dfs with unique train_labels
-    train_accuracy = []
-    test_accuracy = []
+    train_f1 = []
+    test_f1 = []
     train_scores_all = {'precision':[],'recall':[],'f1_score':[]}
     test_scores_all = {'precision':[],'recall':[],'f1_score':[]}
     for fold in range(folds):
@@ -48,8 +48,8 @@ def cross_validate(model,dataset,folds=20):
         model.fit(X_train,y_train)
         train_preds = model.predict(X_train)
         test_preds = model.predict(X_test)
-        train_accuracy.append(accuracy_score(y_train,train_preds))
-        test_accuracy.append(accuracy_score(y_test,test_preds))
+        train_f1.append(f1_score(y_train,train_preds,average='macro'))
+        test_f1.append(f1_score(y_test,test_preds,average='macro'))
         # Calculate metrics for individual classes
         cr_train = classification_report(y_train,train_preds,output_dict=True)
         cr_test = classification_report(y_test,test_preds,output_dict=True)
@@ -66,7 +66,7 @@ def cross_validate(model,dataset,folds=20):
     train_solo = avg_std_metrics(train_scores_all)
     test_solo = avg_std_metrics(test_scores_all)
     
-    return [train_accuracy,train_solo], [test_accuracy,test_solo]
+    return [train_f1,train_solo], [test_f1,test_solo]
 
 
 def avg_std_metrics(all_scores):
