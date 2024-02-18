@@ -8,6 +8,7 @@ __pycache__/
 
 #data files
 
+raw_data_2/
 raw_data/
 clean_data/
 Scripts/
