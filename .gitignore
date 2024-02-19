@@ -8,9 +8,9 @@ __pycache__/
 
 #data files
 
+__pychache__
 raw_data_2/
 raw_data/
-clean_data/
 Scripts/
 share/
 etc/
