@@ -24,7 +24,14 @@ For the feature selection proccess, features were dropped using pearson corellat
 
 * Repeated shuffle stratification on the whole dataset (80-20 split).
 * Scaling based on training set.
-*
+* Models = LR, KNN, SVM
+* Grid search, hyperparameter tuning based on mean F1 macro of all splits.
+
+### 2nd approach: Hidden test set
+
+* Hidden test set 
+* Repeat 1st approach
+* Make predictions of the cross-validated models on the test set
 
 
 
